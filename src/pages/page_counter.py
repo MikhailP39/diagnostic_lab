@@ -1,5 +1,4 @@
-from src.assets.interface import tk_interface
-from src.assets.commands import *
+from src.assets.interface import *
 
 class Counter(tk.Frame):
     def __init__(self, parent, controller):

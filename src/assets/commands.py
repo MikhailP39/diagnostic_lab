@@ -16,6 +16,9 @@ def update_img(self, frame):
     img = Image.fromarray(cv2_img)
     img = img.resize((600, 555), Image.ANTIALIAS)
     img_tk = ImageTk.PhotoImage(image=img)
-    lbl_img = tk.Label(self, image=img_tk)
-    lbl_img.img_tk = img_tk
-    lbl_img.place(x=200, y=50)
+    self.lbl_img = tk.Label(self, image=img_tk)
+    self.lbl_img.img_tk = img_tk
+    self.lbl_img.place(x=200, y=50)
+
+def delete_img(self):
+    self.lbl_img.destroy()
