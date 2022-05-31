@@ -6,8 +6,8 @@ class Menu(tk.Frame):
         self.controller = controller
 
         """Title."""
-        lb_ttl = tk.Label(self, text="Menu", font=("Arial Bold", 30))
-        lb_ttl.pack(side='top')
+        lbl_ttl = tk.Label(self, text="Menu", font=("Arial Bold", 30))
+        lbl_ttl.pack(side='top')
 
         """Buttons."""
         sep = 30
