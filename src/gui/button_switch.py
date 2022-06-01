@@ -1,8 +1,8 @@
 import tkinter as tk
 
 class ButtonSwitch(tk.Frame):
-    def __init__(self, master=None, **kwargs):
-        tk.Frame.__init__(self, master, **kwargs)
+    def __init__(self, parent):
+        tk.Frame.__init__(self, parent)
         self.on = tk.PhotoImage(file='../src/resources/images/toggleSwitch_On.png')
         self.off = tk.PhotoImage(file='../src/resources/images/toggleSwitch_Off.png')
         self.is_off = True
