@@ -5,14 +5,13 @@ import cv2
 
 """Open functions."""
 def open_img(self):
+    delete_img(self)
     self.file_img = tk.filedialog.askopenfilename(filetypes=[
         ('JPG files', '*.jpg'),
         ('PNG files', '*.png')])
     if len(self.file_img) > 0:
         img = cv2.imread(self.file_img)
         update_img(self, img)
-    else:
-        delete_img(self)
 
 def open_video(self):
     delete_img(self)
@@ -23,8 +22,6 @@ def open_video(self):
         self.lbl_f_path.configure(text=v_path)
         self.cap = cv2.VideoCapture(v_path)
         update_video(self)
-    else:
-        delete_img(self)
 
 def open_cam(self):
     delete_img(self)
@@ -61,8 +58,6 @@ def update_video(self):
         if ret == True:
             update_img(self, frame)
             self.lbl_img.after(10, lambda: update_video(self))
-        else:
-            delete_img(self)
 
 """Render functions."""
 
@@ -76,7 +71,7 @@ def delete_img(self):
         self.cap.release()
         self.cap = None
     self.lbl_f_path.configure(text="Any file is not opened")
-    self.lbl_img.destroy()
+    self.lbl_img.imgtk = ""
 
 def num_of_it(self):
     self.number = len(self.cnt)

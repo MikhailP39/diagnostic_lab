@@ -11,7 +11,7 @@ class Counter(tk.Frame):
         """Labels."""
         # Number Info
         self.number = 0
-        self.cnt = None
+        self.cnt = []
         self.lbl_num = tk.Label(self, width=10, bg='white', font=('Arial', 12), text=int(self.number))
         self.lbl_num.place(x=470, y=611)
 
