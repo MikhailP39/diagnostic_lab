@@ -3,6 +3,9 @@ from src.gui.button_switch import ButtonSwitch
 import tkinter as tk
 
 def tk_interface(self, title):
+    """Capture."""
+    self.cap = None
+
     """Labels."""
     # Title
     lbl_ttl = tk.Label(self, text=title, font=("Arial Bold", 30))
@@ -33,11 +36,11 @@ def tk_interface(self, title):
     """Buttons."""
     btn_img = tk.Button(self, text='Image', command=lambda: open_img(self))
     btn_img.place(x=30, y=50)
-    btn_video = tk.Button(self, text='Video')
+    btn_video = tk.Button(self, text='Video', command=lambda: open_video(self))
     btn_video.place(x=74, y=50)
-    btn_cam = tk.Button(self, text='Camera')
+    btn_cam = tk.Button(self, text='Camera', command=lambda: open_cam(self))
     btn_cam.place(x=115, y=50)
-    btn_ref = tk.Button(self, text='Refresh')
+    btn_ref = tk.Button(self, text='Refresh', command=lambda: refresh_img(self))
     btn_ref.place(x=30, y=610)
     btn_del = tk.Button(self, text='Delete', command=lambda: delete_img(self))
     btn_del.place(x=90, y=610)
@@ -59,12 +62,12 @@ def tk_interface(self, title):
     sl_blur.place(x=30, y=320)
 
     self.var_canny_l = tk.IntVar()
-    sl_canny_l = tk.Scale(self, from_=1, to=121, length=130, width=4, orient='horizontal',
+    sl_canny_l = tk.Scale(self, from_=1, to=151, length=130, width=4, orient='horizontal',
                        font=('Console', 10), resolution=2, variable=self.var_canny_l)
     sl_canny_l.place(x=30, y=320 + sep_s)
 
     self.var_canny_h = tk.IntVar()
-    sl_canny_h = tk.Scale(self, from_=1, to=121, length=130, width=4, orient='horizontal',
+    sl_canny_h = tk.Scale(self, from_=1, to=301, length=130, width=4, orient='horizontal',
                           font=('Console', 10), resolution=2, variable=self.var_canny_h)
     sl_canny_h.place(x=30, y=320 + sep_s*2)
 
