@@ -11,6 +11,8 @@ def open_img(self):
     if len(self.file_img) > 0:
         img = cv2.imread(self.file_img)
         update_img(self, img)
+    else:
+        delete_img(self)
 
 def open_video(self):
     delete_img(self)
@@ -22,11 +24,12 @@ def open_video(self):
         self.cap = cv2.VideoCapture(v_path)
         update_video(self)
     else:
-        self.lbl_f_path.configure(text="Any file is not opened")
+        delete_img(self)
 
 def open_cam(self):
     delete_img(self)
     self.cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+    self.lbl_f_path.configure(text='WebCam')
     update_video(self)
 
 """Update functions."""
@@ -59,10 +62,7 @@ def update_video(self):
             update_img(self, frame)
             self.lbl_img.after(10, lambda: update_video(self))
         else:
-            self.lbl_f_path.configure(text="Any file is not opened")
-            self.cap.release()
-            self.cap = None
-            self.lbl_img.destroy()
+            delete_img(self)
 
 """Render functions."""
 
@@ -79,8 +79,7 @@ def delete_img(self):
     self.lbl_img.destroy()
 
 def num_of_it(self):
-    if len(self.cnt) is not None:
-        self.number = len(self.cnt)
-        self.lbl_num.destroy()
-        self.lbl_num = tk.Label(self, width=10, bg='white', font=('Arial', 12), text=int(self.number))
-        self.lbl_num.place(x=470, y=611)
+    self.number = len(self.cnt)
+    self.lbl_num.destroy()
+    self.lbl_num = tk.Label(self, width=10, bg='white', font=('Arial', 12), text=int(self.number))
+    self.lbl_num.place(x=470, y=611)
