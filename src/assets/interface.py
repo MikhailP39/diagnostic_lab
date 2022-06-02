@@ -10,16 +10,21 @@ def tk_interface(self, title):
     # Title
     lbl_ttl = tk.Label(self, text=title, font=("Arial Bold", 30))
     lbl_ttl.pack(side='top')
+    # Options
+    lbl_filter = tk.Label(self, text="Filters", font=("Arial Bold", 10), fg='blue')
+    lbl_filter.place(x=70, y=100)
+    lbl_settings = tk.Label(self, text="Settings", font=("Arial Bold", 10), fg='blue')
+    lbl_settings.place(x=70, y=280)
     # Toggles Labels
     sep = 35
     lbl_gray = tk.Label(self, text="GrayScale", font=("Arial", 10))
-    lbl_gray.place(x=30, y=100)
+    lbl_gray.place(x=30, y=130)
     lbl_canny = tk.Label(self, text="Canny", font=("Arial", 10))
-    lbl_canny.place(x=30, y=100 + sep)
+    lbl_canny.place(x=30, y=130 + sep)
     lbl_dilate = tk.Label(self, text="Dilate", font=("Arial", 10))
-    lbl_dilate.place(x=30, y=100 + sep*2)
+    lbl_dilate.place(x=30, y=130 + sep*2)
     lbl_contour = tk.Label(self, text="Contour", font=("Arial", 10))
-    lbl_contour.place(x=30, y=100 + sep*3)
+    lbl_contour.place(x=30, y=130 + sep*3)
     # Sliders
     sep_s = 50
     lbl_s_blur = tk.Label(self, text="GaussianBlur", font=("Arial Bold", 10))
@@ -32,7 +37,7 @@ def tk_interface(self, title):
     lbl_s_kernel.place(x=30, y=300 + sep_s*3)
     lbl_s_iteration = tk.Label(self, text="Iteration", font=("Arial Bold", 10))
     lbl_s_iteration.place(x=30, y=300 + sep_s*4)
-    # Label Image
+    # Image
     self.lbl_img = tk.Label(self)
     # File Path Info
     self.lbl_f_path = tk.Label(self, text="Any file is not opened", font=("Arial", 10))
@@ -52,13 +57,13 @@ def tk_interface(self, title):
 
     """Toggle Switches."""
     self.btn_sw_gray = ButtonSwitch(self)
-    self.btn_sw_gray.place(x=110, y=95)
+    self.btn_sw_gray.place(x=110, y=125)
     self.btn_sw_canny = ButtonSwitch(self)
-    self.btn_sw_canny.place(x=110, y=95 + sep)
+    self.btn_sw_canny.place(x=110, y=125 + sep)
     self.btn_sw_dilate = ButtonSwitch(self)
-    self.btn_sw_dilate.place(x=110, y=95 + sep*2)
+    self.btn_sw_dilate.place(x=110, y=125 + sep*2)
     self.btn_sw_contour = ButtonSwitch(self)
-    self.btn_sw_contour.place(x=110, y=95 + sep*3)
+    self.btn_sw_contour.place(x=110, y=125 + sep*3)
 
     """Sliders."""
     self.var_blur = tk.IntVar()
