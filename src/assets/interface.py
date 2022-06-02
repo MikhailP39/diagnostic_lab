@@ -32,6 +32,11 @@ def tk_interface(self, title):
     lbl_s_kernel.place(x=30, y=300 + sep_s*3)
     lbl_s_iteration = tk.Label(self, text="Iteration", font=("Arial Bold", 10))
     lbl_s_iteration.place(x=30, y=300 + sep_s*4)
+    # Label Image
+    self.lbl_img = tk.Label(self)
+    # File Path Info
+    self.lbl_f_path = tk.Label(self, text="Any file is not opened", font=("Arial", 10))
+    self.lbl_f_path.place(x=430, y=635)
 
     """Buttons."""
     btn_img = tk.Button(self, text='Image', command=lambda: open_img(self))
@@ -43,7 +48,7 @@ def tk_interface(self, title):
     btn_ref = tk.Button(self, text='Refresh', command=lambda: refresh_img(self))
     btn_ref.place(x=30, y=610)
     btn_del = tk.Button(self, text='Delete', command=lambda: delete_img(self))
-    btn_del.place(x=90, y=610)
+    btn_del.place(x=80, y=610)
 
     """Toggle Switches."""
     self.btn_sw_gray = ButtonSwitch(self)
@@ -63,22 +68,22 @@ def tk_interface(self, title):
 
     self.var_canny_l = tk.IntVar()
     sl_canny_l = tk.Scale(self, from_=1, to=151, length=130, width=4, orient='horizontal',
-                       font=('Console', 10), resolution=2, variable=self.var_canny_l)
+                       font=('Console', 10), resolution=1, variable=self.var_canny_l)
     sl_canny_l.place(x=30, y=320 + sep_s)
 
     self.var_canny_h = tk.IntVar()
     sl_canny_h = tk.Scale(self, from_=1, to=301, length=130, width=4, orient='horizontal',
-                          font=('Console', 10), resolution=2, variable=self.var_canny_h)
+                          font=('Console', 10), resolution=1, variable=self.var_canny_h)
     sl_canny_h.place(x=30, y=320 + sep_s*2)
 
     self.var_kernel = tk.IntVar()
-    sl_kernel = tk.Scale(self, from_=1, to=121, length=130, width=4, orient='horizontal',
-                          font=('Console', 10), resolution=2, variable=self.var_kernel)
+    sl_kernel = tk.Scale(self, from_=1, to=11, length=130, width=4, orient='horizontal',
+                          font=('Console', 10), resolution=1, variable=self.var_kernel)
     sl_kernel.place(x=30, y=320 + sep_s*3)
 
     self.var_iteration = tk.IntVar()
-    sl_iteration = tk.Scale(self, from_=1, to=121, length=130, width=4, orient='horizontal',
-                          font=('Console', 10), resolution=2, variable=self.var_iteration)
+    sl_iteration = tk.Scale(self, from_=1, to=21, length=130, width=4, orient='horizontal',
+                          font=('Console', 10), resolution=1, variable=self.var_iteration)
     sl_iteration.place(x=30, y=320 + sep_s*4)
 
 

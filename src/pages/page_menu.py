@@ -15,4 +15,4 @@ class Menu(tk.Frame):
         btn_counter.place(x=210, y=50)
 
         btn_quit = tk.Button(text='Quit', command=quit)
-        btn_quit.place(x=770, y=610)
+        btn_quit.place(x=800, y=610)
