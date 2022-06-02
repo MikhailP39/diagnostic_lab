@@ -1,5 +1,5 @@
 # DIAGNOSTIC LABORATORY 
-This program is designed to analyze the images. This program is open to add the new options. 
+This program is designed to analyze the images and opened to add the new options. 
 
 Existing options:
 counter - for counting the items on the image; 
