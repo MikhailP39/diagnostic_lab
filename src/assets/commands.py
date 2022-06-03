@@ -2,32 +2,37 @@ import tkinter as tk
 from tkinter import filedialog
 from PIL import ImageTk, Image
 import cv2
+from tkinter import messagebox
 
 """Open functions."""
 def open_img(self):
     delete_img(self)
-    self.file_img = tk.filedialog.askopenfilename(filetypes=[
-        ('JPG files', '*.jpg'),
-        ('PNG files', '*.png')])
-    if len(self.file_img) > 0:
-        img = cv2.imread(self.file_img)
-        update_img(self, img)
+    try:
+        self.file_img = tk.filedialog.askopenfilename(filetypes=[
+            ('JPG files', '*.jpg'),
+            ('PNG files', '*.png')])
+        if len(self.file_img) > 0:
+            self.lbl_f_path.configure(text=self.file_img)
+            img = cv2.imread(self.file_img)
+            update_img(self, img)
+    except cv2.error:
+        return messagebox.showerror("Error:215", "Black and white images are not supported. Please select a color image!")
 
 def open_video(self):
     delete_img(self)
-    v_path = tk.filedialog.askopenfilename(filetypes=[
+    self.v_path = tk.filedialog.askopenfilename(filetypes=[
         ('AVI files', '*.avi'),
         ('MP4 files', '*.mp4')])
-    if len(v_path) > 0:
-        self.lbl_f_path.configure(text=v_path)
-        self.cap = cv2.VideoCapture(v_path)
+    if len(self.v_path) > 0:
+        self.lbl_f_path.configure(text=self.v_path)
+        self.cap = cv2.VideoCapture(self.v_path)
         update_video(self)
 
 def open_cam(self):
     delete_img(self)
     self.cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     self.lbl_f_path.configure(text='WebCam')
-    update_video(self)
+    update_cam(self)
 
 """Update functions."""
 
@@ -59,10 +64,19 @@ def update_video(self):
             update_img(self, frame)
             self.lbl_img.after(10, lambda: update_video(self))
 
+def update_cam(self):
+    if self.cap is not None:
+        ret, frame = self.cap.read()
+        frame = cv2.flip(frame, 1) # rotate cam
+        if ret == True:
+            update_img(self, frame)
+            self.lbl_img.after(10, lambda: update_cam(self))
+
 """Render functions."""
 
 def refresh_img(self):
     delete_img(self)
+    self.lbl_f_path.configure(text=self.file_img)
     img = cv2.imread(self.file_img)
     update_img(self, img)
 
@@ -77,4 +91,4 @@ def num_of_it(self):
     self.number = len(self.cnt)
     self.lbl_num.destroy()
     self.lbl_num = tk.Label(self, width=10, bg='white', font=('Arial', 12), text=int(self.number))
-    self.lbl_num.place(x=470, y=611)
+    self.lbl_num.place(x=470, y=621)
