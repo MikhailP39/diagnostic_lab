@@ -51,7 +51,7 @@ def update_img(self, frame):
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         cv2_img = cv2.drawContours(rgb, self.cnt, -1, (0, 255, 0), 2)
     img = Image.fromarray(cv2_img)
-    img = img.resize((600, 555), Image.ANTIALIAS)
+    img = img.resize((599, 557), Image.ANTIALIAS)
     img_tk = ImageTk.PhotoImage(image=img)
     self.lbl_img = tk.Label(self, image=img_tk)
     self.lbl_img.imgtk = img_tk

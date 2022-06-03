@@ -38,7 +38,8 @@ def tk_interface(self, title, background):
     lbl_s_iteration = tk.Label(self, text="Iteration", font=("Arial Bold", 10), bg=background)
     lbl_s_iteration.place(x=30, y=300 + sep_s*4)
     # Image
-    self.lbl_img = tk.Label(self)
+    self.lbl_img = tk.Label(self, bg='#F0F0F0', width=85, height=37)
+    self.lbl_img.place(x=200, y=50)
     # File Path Info
     self.lbl_f_path = tk.Label(self, text="Any file is not opened", font=("Arial", 10), bg=background)
     self.lbl_f_path.place(x=430, y=645)
