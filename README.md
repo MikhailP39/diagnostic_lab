@@ -1,5 +1,5 @@
 # DIAGNOSTIC LABORATORY 
-This program is designed to lear computer vision and opened to add the new options. 
+This program is designed to learn computer vision and opened to add the new options. 
 
 Existing options:
 counter - for counting the items on the image; 

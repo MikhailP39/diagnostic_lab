@@ -12,11 +12,11 @@ class Counter(tk.Frame):
         # Number Info
         self.number = 0
         self.cnt = []
-        self.lbl_num = tk.Label(self, width=10, bg='white', font=('Arial', 12), text=int(self.number))
-        self.lbl_num.place(x=470, y=621)
+        self.lbl_num = tk.Label(self, width=8, bg='white', font=('Arial', 12), text=int(self.number))
+        self.lbl_num.place(x=480, y=621)
 
         """Buttons."""
         btn_menu = tk.Button(self, text='Menu', command=lambda: controller.up_frame("Menu"))
         btn_menu.place(x=757, y=620)
-        btn_items = tk.Button(self, text='Items', command=lambda: num_of_it(self))
-        btn_items.place(x=425, y=620)
+        btn_objects = tk.Button(self, text='Objects', command=lambda: num_of_it(self))
+        btn_objects.place(x=425, y=620)

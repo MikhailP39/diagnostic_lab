@@ -2,6 +2,7 @@ import tkinter as tk
 
 from src.pages.page_menu import Menu
 from src.pages.page_counter import Counter
+from src.pages.page_anpr import ANPR
 
 class Core(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -14,7 +15,7 @@ class Core(tk.Tk):
 
         self.listing = {}
 
-        for p in (Menu, Counter):
+        for p in (Menu, Counter, ANPR):
             page_name = p.__name__
             frame = p(parent=container, controller=self)
             frame.grid(row=0, column=0, sticky='nsew')

@@ -90,5 +90,5 @@ def delete_img(self):
 def num_of_it(self):
     self.number = len(self.cnt)
     self.lbl_num.destroy()
-    self.lbl_num = tk.Label(self, width=10, bg='white', font=('Arial', 12), text=int(self.number))
-    self.lbl_num.place(x=470, y=621)
+    self.lbl_num = tk.Label(self, width=8, bg='white', font=('Arial', 12), text=int(self.number))
+    self.lbl_num.place(x=480, y=621)

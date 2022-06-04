@@ -57,13 +57,13 @@ def tk_interface(self, title, background):
     btn_del.place(x=80, y=620)
 
     """Toggle Switches."""
-    self.btn_sw_gray = ButtonSwitch(self,'#83CDEA')
+    self.btn_sw_gray = ButtonSwitch(self, background)
     self.btn_sw_gray.place(x=110, y=125)
-    self.btn_sw_canny = ButtonSwitch(self,'#83CDEA')
+    self.btn_sw_canny = ButtonSwitch(self, background)
     self.btn_sw_canny.place(x=110, y=125 + sep)
-    self.btn_sw_dilate = ButtonSwitch(self,'#83CDEA')
+    self.btn_sw_dilate = ButtonSwitch(self, background)
     self.btn_sw_dilate.place(x=110, y=125 + sep*2)
-    self.btn_sw_contour = ButtonSwitch(self,'#83CDEA')
+    self.btn_sw_contour = ButtonSwitch(self, background)
     self.btn_sw_contour.place(x=110, y=125 + sep*3)
 
     """Sliders."""
