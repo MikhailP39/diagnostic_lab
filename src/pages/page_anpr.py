@@ -1,4 +1,5 @@
 import cv2
+import easyocr
 import imutils
 import numpy as np
 from src.assets.interface import *
@@ -56,7 +57,6 @@ class ANPR(tk.Frame):
         self.lbl_num_txt.place(x=280, y=621)
         self.lbl_num = tk.Label(self, width=12, bg='white', font=('Arial', 12), text=self.number)
         self.lbl_num.place(x=440, y=621)
-
 
         """Buttons."""
         btn_menu = tk.Button(self, text='Menu', command=lambda: controller.up_frame("Menu"))
@@ -136,7 +136,15 @@ class ANPR(tk.Frame):
             cropped_img = self.gray_img[x1:x2+1, y1:y2+1]
             cv2_img = cv2.rectangle(self.orig_img, tuple(approx[0][0]), tuple(approx[2][0]), (0, 255, 0), 3)
             """Read Text from Image"""
-
+            reader = easyocr.Reader(['en'])
+            result = reader.readtext(cropped_img)
+            if len(result) == 1:
+                self.text = result[0][-2]
+            elif len(result) == 2:
+                self.text = result[0][-2] + result[1][-2]
+            self.number = self.text.replace(" ", "")
+            self.lbl_num = tk.Label(self, width=12, bg='white', font=('Arial', 12), text=self.number)
+            self.lbl_num.place(x=440, y=621)
         img = Image.fromarray(cv2_img)
         img = img.resize((599, 557), Image.ANTIALIAS)
         img_tk = ImageTk.PhotoImage(image=img)
