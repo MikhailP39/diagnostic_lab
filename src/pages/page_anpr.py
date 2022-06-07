@@ -1,4 +1,6 @@
+import cv2
 import imutils
+import numpy as np
 from src.assets.interface import *
 
 class ANPR(tk.Frame):
@@ -37,8 +39,8 @@ class ANPR(tk.Frame):
         lbl_canny.place(x=lbl_sw_x, y=lbl_sw_y + sep*2)
         lbl_mask = tk.Label(self, text="Mask", font=("Arial", 10), bg=background)
         lbl_mask.place(x=lbl_sw_x, y=lbl_sw_y + sep * 3)
-        lbl_cropping = tk.Label(self, text="Cropping", font=("Arial", 10), bg=background)
-        lbl_cropping.place(x=lbl_sw_x, y=lbl_sw_y + sep * 4)
+        lbl_contour = tk.Label(self, text="Contour", font=("Arial", 10), bg=background)
+        lbl_contour.place(x=lbl_sw_x, y=lbl_sw_y + sep * 4)
         # Sliders
         lbl_s_iteration = tk.Label(self, text="Iteration", font=("Arial Bold", 10), bg=background)
         lbl_s_iteration.place(x=lbl_sl_x, y=lbl_sl_y)
@@ -48,6 +50,12 @@ class ANPR(tk.Frame):
         lbl_s_canny_l.place(x=lbl_sl_x, y=lbl_sl_y + sep_s*2)
         lbl_s_canny_h = tk.Label(self, text="Canny High", font=("Arial Bold", 10), bg=background)
         lbl_s_canny_h.place(x=lbl_sl_x, y=lbl_sl_y + sep_s * 3)
+        # Number Info
+        self.number = ""
+        self.lbl_num_txt = tk.Label(self,  text="Recognised Number Plate", font=('Arial', 10), bg=background)
+        self.lbl_num_txt.place(x=280, y=621)
+        self.lbl_num = tk.Label(self, width=12, bg='white', font=('Arial', 12), text=self.number)
+        self.lbl_num.place(x=440, y=621)
 
 
         """Buttons."""
@@ -63,8 +71,8 @@ class ANPR(tk.Frame):
         self.btn_sw_canny.place(x=btn_sw_x, y=btn_sw_y + sep*2)
         self.btn_mask = ButtonSwitch(self, background)
         self.btn_mask.place(x=btn_sw_x, y=btn_sw_y + sep * 3)
-        self.btn_cropping = ButtonSwitch(self, background)
-        self.btn_cropping.place(x=btn_sw_x, y=btn_sw_y + sep * 4)
+        self.btn_contour = ButtonSwitch(self, background)
+        self.btn_contour.place(x=btn_sw_x, y=btn_sw_y + sep * 4)
 
 
         """Sliders."""
@@ -93,13 +101,41 @@ class ANPR(tk.Frame):
         sl_canny_h.place(x=sl_x, y=sl_y + sep_s * 3)
 
     def update_img(self, frame):
-        cv2_img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        self.orig_img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        cv2_img = self.orig_img
+
         if self.btn_sw_gray.is_off == False:
-            cv2_img = cv2.cvtColor(cv2_img, cv2.COLOR_RGB2GRAY)
+            self.gray_img = cv2.cvtColor(cv2_img, cv2.COLOR_RGB2GRAY)
+            cv2_img = self.gray_img
+
         if self.btn_sw_bfilter.is_off == False:
             cv2_img = cv2.bilateralFilter(cv2_img, self.var_iteration.get(), self.var_sigma.get(), self.var_sigma.get())
+
         if self.btn_sw_canny.is_off == False:
             cv2_img = cv2.Canny(cv2_img, self.var_canny_l.get(), self.var_canny_h.get(), 2)
+
+        if self.btn_mask.is_off == False:
+            keypoints = cv2.findContours(cv2_img.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+            contours = imutils.grab_contours(keypoints)
+            contours = sorted(contours, key=cv2.contourArea, reverse=True)[:10]
+            location = None
+            for contour in contours:
+                approx = cv2.approxPolyDP(contour, 10, True)
+                if len(approx) == 4:
+                    location = approx
+                    break
+            self.mask = np.zeros(self.gray_img.shape, np.uint8)
+            cv2_img = cv2.drawContours(self.mask, [location], 0, 255, -1)
+            cv2_img = cv2.bitwise_and(self.orig_img, self.orig_img, mask=self.mask)
+
+        if self.btn_contour.is_off == False:
+            """Cropping Image"""
+            (x, y) = np.where(self.mask == 255)
+            (x1, y1) = (np.min(x), np.min(y))
+            (x2, y2) = (np.max(x), np.max(y))
+            cropped_img = self.gray_img[x1:x2+1, y1:y2+1]
+            cv2_img = cv2.rectangle(self.orig_img, tuple(approx[0][0]), tuple(approx[2][0]), (0, 255, 0), 3)
+            """Read Text from Image"""
 
         img = Image.fromarray(cv2_img)
         img = img.resize((599, 557), Image.ANTIALIAS)
@@ -108,13 +144,3 @@ class ANPR(tk.Frame):
         self.lbl_img.imgtk = img_tk
         self.lbl_img.place(x=200, y=50)
 
-    def get_mask(self, image):
-        keypoints = cv2.findContours(image.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        contours = imutils.grab_contours(keypoints)
-        contours = sorted(contours, key=cv2.contourArea, reverse=True)[:10]
-        location = None
-        for contour in contours:
-            approx = cv2.approxPolyDP(contour, 10, True)
-            if len(approx) == 4:
-                location = approx
-                break
