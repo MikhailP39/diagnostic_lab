@@ -71,3 +71,9 @@ def num_of_it(self):
     self.lbl_num.destroy()
     self.lbl_num = tk.Label(self, width=8, bg='white', font=('Arial', 12), text=int(self.number))
     self.lbl_num.place(x=480, y=621)
+
+def num_plate(self):
+    self.lbl_num.destroy()
+    self.number = self.text.replace(" ", "")
+    self.lbl_num = tk.Label(self, width=12, bg='white', font=('Arial', 12), text=self.number)
+    self.lbl_num.place(x=440, y=621)

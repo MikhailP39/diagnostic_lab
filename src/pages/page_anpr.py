@@ -53,14 +53,14 @@ class ANPR(tk.Frame):
         lbl_s_canny_h.place(x=lbl_sl_x, y=lbl_sl_y + sep_s * 3)
         # Number Info
         self.number = ""
-        self.lbl_num_txt = tk.Label(self,  text="Recognised Number Plate", font=('Arial', 10), bg=background)
-        self.lbl_num_txt.place(x=280, y=621)
         self.lbl_num = tk.Label(self, width=12, bg='white', font=('Arial', 12), text=self.number)
         self.lbl_num.place(x=440, y=621)
 
         """Buttons."""
         btn_menu = tk.Button(self, text='Menu', command=lambda: controller.up_frame("Menu"))
         btn_menu.place(x=757, y=620)
+        btn_num = tk.Button(self, text='Number', command=lambda: num_plate(self))
+        btn_num.place(x=380, y=620)
 
         """Toggle Switches."""
         self.btn_sw_gray = ButtonSwitch(self, background)
@@ -142,9 +142,7 @@ class ANPR(tk.Frame):
                 self.text = result[0][-2]
             elif len(result) == 2:
                 self.text = result[0][-2] + result[1][-2]
-            self.number = self.text.replace(" ", "")
-            self.lbl_num = tk.Label(self, width=12, bg='white', font=('Arial', 12), text=self.number)
-            self.lbl_num.place(x=440, y=621)
+            # self.number = self.text.replace(" ", "")
         img = Image.fromarray(cv2_img)
         img = img.resize((599, 557), Image.ANTIALIAS)
         img_tk = ImageTk.PhotoImage(image=img)
