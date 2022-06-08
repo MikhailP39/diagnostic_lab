@@ -1,8 +1,7 @@
-import tkinter as tk
 from tkinter import filedialog
 from PIL import ImageTk, Image
 import cv2
-from tkinter import messagebox
+from src.assets.update_db import *
 
 """Open functions."""
 def open_img(self):
@@ -77,3 +76,12 @@ def num_plate(self):
     self.number = self.text.replace(" ", "")
     self.lbl_num = tk.Label(self, width=12, bg='white', font=('Arial', 12), text=self.number)
     self.lbl_num.place(x=440, y=621)
+
+def open_update_db(self):
+    self.db = UpdateDB()
+
+def check_data(self):
+    db = PlateNum_DB()
+    plate_info = db.read_one(self.number)
+    messagebox.showinfo("Info", plate_info)
+

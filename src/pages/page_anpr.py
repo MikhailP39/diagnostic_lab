@@ -3,6 +3,7 @@ import easyocr
 import imutils
 import numpy as np
 from src.assets.interface import *
+from src.assets.update_db import *
 
 class ANPR(tk.Frame):
     def __init__(self, parent, controller):
@@ -10,8 +11,9 @@ class ANPR(tk.Frame):
         self.controller = controller
 
         """Separators."""
-        sep = 35
+        sep_y = 35
         sep_s = 50
+
         """Coordinates"""
         lbl_sw_x = 30
         lbl_sw_y = 130
@@ -19,6 +21,7 @@ class ANPR(tk.Frame):
         lbl_sl_y = 350
         btn_sw_x = 110
         btn_sw_y = 125
+        btn_y = 620
         sl_x = 30
         sl_y = 370
 
@@ -35,13 +38,13 @@ class ANPR(tk.Frame):
         lbl_gray = tk.Label(self, text="GrayScale", font=("Arial", 10), bg=background)
         lbl_gray.place(x=lbl_sw_x, y=lbl_sw_y)
         lbl_bfilter = tk.Label(self, text="BilatFilter", font=("Arial", 10), bg=background)
-        lbl_bfilter.place(x=lbl_sw_x, y=lbl_sw_y + sep)
+        lbl_bfilter.place(x=lbl_sw_x, y=lbl_sw_y + sep_y)
         lbl_canny = tk.Label(self, text="Canny", font=("Arial", 10), bg=background)
-        lbl_canny.place(x=lbl_sw_x, y=lbl_sw_y + sep*2)
+        lbl_canny.place(x=lbl_sw_x, y=lbl_sw_y + sep_y*2)
         lbl_mask = tk.Label(self, text="Mask", font=("Arial", 10), bg=background)
-        lbl_mask.place(x=lbl_sw_x, y=lbl_sw_y + sep * 3)
+        lbl_mask.place(x=lbl_sw_x, y=lbl_sw_y + sep_y * 3)
         lbl_contour = tk.Label(self, text="Contour", font=("Arial", 10), bg=background)
-        lbl_contour.place(x=lbl_sw_x, y=lbl_sw_y + sep * 4)
+        lbl_contour.place(x=lbl_sw_x, y=lbl_sw_y + sep_y * 4)
         # Sliders
         lbl_s_iteration = tk.Label(self, text="Iteration", font=("Arial Bold", 10), bg=background)
         lbl_s_iteration.place(x=lbl_sl_x, y=lbl_sl_y)
@@ -58,21 +61,25 @@ class ANPR(tk.Frame):
 
         """Buttons."""
         btn_menu = tk.Button(self, text='Menu', command=lambda: controller.up_frame("Menu"))
-        btn_menu.place(x=757, y=620)
+        btn_menu.place(x=757, y=btn_y)
+        btn_db = tk.Button(self, text='AddData', command=lambda: open_update_db(self))
+        btn_db.place(x=279, y=btn_y)
+        btn_check = tk.Button(self, text='Check', command=lambda: check_data(self))
+        btn_check.place(x=336, y=btn_y)
         btn_num = tk.Button(self, text='Number', command=lambda: num_plate(self))
-        btn_num.place(x=380, y=620)
+        btn_num.place(x=380, y=btn_y)
 
         """Toggle Switches."""
         self.btn_sw_gray = ButtonSwitch(self, background)
         self.btn_sw_gray.place(x=btn_sw_x, y=btn_sw_y)
         self.btn_sw_bfilter = ButtonSwitch(self, background)
-        self.btn_sw_bfilter.place(x=btn_sw_x, y=btn_sw_y + sep)
+        self.btn_sw_bfilter.place(x=btn_sw_x, y=btn_sw_y + sep_y)
         self.btn_sw_canny = ButtonSwitch(self, background)
-        self.btn_sw_canny.place(x=btn_sw_x, y=btn_sw_y + sep*2)
+        self.btn_sw_canny.place(x=btn_sw_x, y=btn_sw_y + sep_y*2)
         self.btn_mask = ButtonSwitch(self, background)
-        self.btn_mask.place(x=btn_sw_x, y=btn_sw_y + sep * 3)
+        self.btn_mask.place(x=btn_sw_x, y=btn_sw_y + sep_y * 3)
         self.btn_contour = ButtonSwitch(self, background)
-        self.btn_contour.place(x=btn_sw_x, y=btn_sw_y + sep * 4)
+        self.btn_contour.place(x=btn_sw_x, y=btn_sw_y + sep_y * 4)
 
 
         """Sliders."""
@@ -142,7 +149,7 @@ class ANPR(tk.Frame):
                 self.text = result[0][-2]
             elif len(result) == 2:
                 self.text = result[0][-2] + result[1][-2]
-            # self.number = self.text.replace(" ", "")
+            self.number = self.text.replace(" ", "")
         img = Image.fromarray(cv2_img)
         img = img.resize((599, 557), Image.ANTIALIAS)
         img_tk = ImageTk.PhotoImage(image=img)
