@@ -28,3 +28,7 @@ class PlateNum_DB:
         self.cur.execute("""SELECT * FROM numbers WHERE number = VALUES(?)""", number)
         row = self.cur.fetchone()
         return row
+
+    def delete_one(self, number):
+        self.cur.execute("""DELETE * FROM numbers WHERE number = VALUES(?)""", number)
+
