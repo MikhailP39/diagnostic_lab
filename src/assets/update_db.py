@@ -50,7 +50,8 @@ class UpdateDB():
     def submit(self):
 
         date = self.e_date.get()
-        if len(self.e_number.get()) in range(5, 20) and len(self.e_city.get()) > 2 and len(self.e_first_name.get()) > 2 and len(self.e_second_name.get()) > 2:
+        if len(self.e_number.get()) in range(5, 20) and len(self.e_city.get()) > 2 \
+                and len(self.e_first_name.get()) > 2 and len(self.e_second_name.get()) > 2:
             number = self.e_number.get().upper()
             city = self.e_city.get().upper()
             first = self.e_first_name.get().upper()
