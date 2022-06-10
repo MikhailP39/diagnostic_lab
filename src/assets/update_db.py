@@ -58,7 +58,7 @@ class UpdateDB():
             if number.isalnum() and city.isalpha() and first.isalpha() and second.isalpha():
                 item = (date, number, city, first, second)
                 self.db.insert(item)
-                messagebox.showinfo("Info", date + "|" + number + "|" + city + "|" + first + "|" + second +
+                messagebox.showinfo("Info", date + "  " + number + "  " + city + "  " + first + "  " + second +
                                     "\n\nAdd to Data Base")
         else:
             messagebox.showerror("Error", "The Wrong Information!\nPlease, Insert Your information in the correct" +

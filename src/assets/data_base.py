@@ -22,17 +22,15 @@ class PlateNum_DB:
     def read_all(self):
         self.cur.execute("""SELECT * FROM numbers""")
         rows = self.cur.fetchall()
-        self.conn.close()
         return rows
 
     def read_one(self, number):
         self.cur.execute("""SELECT * FROM numbers WHERE number=?""", (number,))
         row = self.cur.fetchone()
-        self.conn.close()
         return row
 
     def delete_one(self, number):
         self.cur.execute("""DELETE FROM numbers WHERE number=?""", (number,))
         self.conn.commit()
-        self.conn.close()
+
 
