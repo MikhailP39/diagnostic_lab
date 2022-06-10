@@ -1,3 +1,4 @@
+from src.gui.button_switch import ButtonSwitch
 from src.assets.interface import *
 
 class Counter(tk.Frame):

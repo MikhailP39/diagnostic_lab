@@ -31,7 +31,7 @@ def open_cam(self):
     delete_img(self)
     self.cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     self.lbl_f_path.configure(text='WebCam')
-    update_cam(self)
+    update_video(self)
 
 """Update functions."""
 
@@ -41,14 +41,6 @@ def update_video(self):
         if ret == True:
             self.update_img(frame)
             self.lbl_img.after(10, lambda: update_video(self))
-
-def update_cam(self):
-    if self.cap is not None:
-        ret, frame = self.cap.read()
-        frame = cv2.flip(frame, 1) # rotate cam
-        if ret == True:
-            self.update_img(frame)
-            self.lbl_img.after(10, lambda: update_cam(self))
 
 """Render functions."""
 
@@ -77,11 +69,11 @@ def num_plate(self):
     self.lbl_num = tk.Label(self, width=12, bg='white', font=('Arial', 12), text=self.number)
     self.lbl_num.place(x=440, y=621)
 
-def open_update_db(self):
+def open_db_np(self):
     self.db = UpdateDB()
 
-def check_data(self):
-    db = PlateNum_DB()
+def check_db_np(self):
+    db = PlateNum_DB('../src/resources/num_plate_db/num_plates.db')
     plate_info = db.read_one(self.number)
-    messagebox.showinfo("Info", plate_info)
+    messagebox.showinfo("Number Plate", plate_info)
 

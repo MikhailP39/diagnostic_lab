@@ -1,5 +1,4 @@
 from src.assets.commands import *
-from src.gui.button_switch import ButtonSwitch
 import tkinter as tk
 
 def tk_interface(self, title, background):

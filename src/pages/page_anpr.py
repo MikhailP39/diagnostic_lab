@@ -2,6 +2,7 @@ import cv2
 import easyocr
 import imutils
 import numpy as np
+from src.gui.button_switch import ButtonSwitch
 from src.assets.interface import *
 from src.assets.update_db import *
 
@@ -62,9 +63,9 @@ class ANPR(tk.Frame):
         """Buttons."""
         btn_menu = tk.Button(self, text='Menu', command=lambda: controller.up_frame("Menu"))
         btn_menu.place(x=757, y=btn_y)
-        btn_db = tk.Button(self, text='AddData', command=lambda: open_update_db(self))
+        btn_db = tk.Button(self, text='AddData', command=lambda: open_db_np(self))
         btn_db.place(x=279, y=btn_y)
-        btn_check = tk.Button(self, text='Check', command=lambda: check_data(self))
+        btn_check = tk.Button(self, text='Check', command=lambda: check_db_np(self))
         btn_check.place(x=336, y=btn_y)
         btn_num = tk.Button(self, text='Number', command=lambda: num_plate(self))
         btn_num.place(x=380, y=btn_y)
@@ -125,14 +126,15 @@ class ANPR(tk.Frame):
             keypoints = cv2.findContours(cv2_img.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
             contours = imutils.grab_contours(keypoints)
             contours = sorted(contours, key=cv2.contourArea, reverse=True)[:10]
-            location = None
+
             for contour in contours:
-                approx = cv2.approxPolyDP(contour, 10, True)
-                if len(approx) == 4:
-                    location = approx
+                self.approx = cv2.approxPolyDP(contour, 10, True)
+                if len(self.approx) == 4:
+                    self.location = self.approx
                     break
+
             self.mask = np.zeros(self.gray_img.shape, np.uint8)
-            cv2_img = cv2.drawContours(self.mask, [location], 0, 255, -1)
+            cv2_img = cv2.drawContours(self.mask, [self.location], 0, 255, -1)
             cv2_img = cv2.bitwise_and(self.orig_img, self.orig_img, mask=self.mask)
 
         if self.btn_contour.is_off == False:
@@ -141,15 +143,18 @@ class ANPR(tk.Frame):
             (x1, y1) = (np.min(x), np.min(y))
             (x2, y2) = (np.max(x), np.max(y))
             cropped_img = self.gray_img[x1:x2+1, y1:y2+1]
-            cv2_img = cv2.rectangle(self.orig_img, tuple(approx[0][0]), tuple(approx[2][0]), (0, 255, 0), 3)
+            cv2_img = cv2.rectangle(self.orig_img, tuple(self.approx[0][0]), tuple(self.approx[2][0]), (0, 255, 0), 2)
             """Read Text from Image"""
-            reader = easyocr.Reader(['en'])
-            result = reader.readtext(cropped_img)
-            if len(result) == 1:
-                self.text = result[0][-2]
-            elif len(result) == 2:
-                self.text = result[0][-2] + result[1][-2]
-            self.number = self.text.replace(" ", "")
+            reader = easyocr.Reader(['en'], gpu=False)
+            results = reader.readtext(cropped_img)
+            self.text = ""
+            for i in range(len(results)):
+                self.text += results[i][-2]
+                self.text = self.text.replace(".", "")
+                self.number = self.text.replace(" ", "")
+
+            cv2.putText(self.orig_img, self.number, (10, 10), 1, 1, (255, 0, 0), 2)
+
         img = Image.fromarray(cv2_img)
         img = img.resize((599, 557), Image.ANTIALIAS)
         img_tk = ImageTk.PhotoImage(image=img)

@@ -1,8 +1,8 @@
 import sqlite3
 
 class PlateNum_DB:
-    def __init__(self):
-        self.conn = sqlite3.connect('../src/resources/num_plate_db/num_plates.db')
+    def __init__(self, f_path):
+        self.conn = sqlite3.connect(f_path)
         self.cur = self.conn.cursor()
         self.create_table()
 
