@@ -8,7 +8,7 @@ class PlateNum_DB:
 
     def create_table(self):
         self.cur.execute("""CREATE TABLE IF NOT EXISTS numbers(
-                            data DATA PRIMARY KEY,
+                            data DATA,
                             number TEXT,
                             city TEXT,
                             first_name TEXT,
@@ -17,7 +17,6 @@ class PlateNum_DB:
     def insert(self, item):
         self.cur.execute("""INSERT OR IGNORE INTO numbers VALUES(?,?,?,?,?)""", item)
         self.conn.commit()
-        self.conn.close()
 
     def read_all(self):
         self.cur.execute("""SELECT * FROM numbers""")

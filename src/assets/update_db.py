@@ -8,6 +8,7 @@ class UpdateDB():
         """Window."""
         self.window = tk.Tk()
         self.window.geometry('300x200')
+        self.window.title("The Number Plates DB")
         """Data Base."""
         self.db = PlateNum_DB('../src/resources/num_plate_db/num_plates.db')
         """Coordinates."""
@@ -48,7 +49,6 @@ class UpdateDB():
 
     """Commands."""
     def submit(self):
-
         date = self.e_date.get()
         if len(self.e_number.get()) in range(5, 20) and len(self.e_city.get()) > 2 \
                 and len(self.e_first_name.get()) > 2 and len(self.e_second_name.get()) > 2:
@@ -59,7 +59,7 @@ class UpdateDB():
             if number.isalnum() and city.isalpha() and first.isalpha() and second.isalpha():
                 item = (date, number, city, first, second)
                 self.db.insert(item)
-                messagebox.showinfo("Info", date + "  " + number + "  " + city + "  " + first + "  " + second +
+                messagebox.showinfo("Info", date + " " + number + " " + city + " " + first + " " + second +
                                     "\n\nAdd to Data Base")
         else:
             messagebox.showerror("Error", "The Wrong Information!\nPlease, Insert Your information in the correct" +

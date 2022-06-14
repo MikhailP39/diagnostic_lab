@@ -82,7 +82,6 @@ class ANPR(tk.Frame):
         self.btn_contour = ButtonSwitch(self, background)
         self.btn_contour.place(x=btn_sw_x, y=btn_sw_y + sep_y * 4)
 
-
         """Sliders."""
         self.var_iteration = tk.IntVar()
         sl_iteration = tk.Scale(self, from_=1, to=21, length=130, width=4, orient='horizontal',
@@ -139,11 +138,15 @@ class ANPR(tk.Frame):
 
         if self.btn_contour.is_off == False:
             """Cropping Image"""
-            (x, y) = np.where(self.mask == 255)
-            (x1, y1) = (np.min(x), np.min(y))
-            (x2, y2) = (np.max(x), np.max(y))
-            cropped_img = self.gray_img[x1:x2+1, y1:y2+1]
-            cv2_img = cv2.rectangle(self.orig_img, tuple(self.approx[0][0]), tuple(self.approx[2][0]), (0, 255, 0), 2)
+            try:
+                (x, y) = np.where(self.mask == 255)
+                (x1, y1) = (np.min(x), np.min(y))
+                (x2, y2) = (np.max(x), np.max(y))
+                cropped_img = self.gray_img[x1:x2+1, y1:y2+1]
+                cv2_img = cv2.rectangle(self.orig_img, tuple(self.approx[0][0]), tuple(self.approx[2][0]), (0, 255, 0), 2)
+            except IndexError:
+                raise messagebox.showerror("IndexError", "Can't be found the number plate contour")
+
             """Read Text from Image"""
             reader = easyocr.Reader(['en'], gpu=False)
             results = reader.readtext(cropped_img)
@@ -153,7 +156,7 @@ class ANPR(tk.Frame):
                 self.text = self.text.replace(".", "")
                 self.number = self.text.replace(" ", "")
 
-            cv2.putText(self.orig_img, self.number, (10, 10), 1, 1, (255, 0, 0), 2)
+            cv2.putText(self.orig_img, self.number, (10, 20), 1, 2, (255, 0, 0), 2)
 
         img = Image.fromarray(cv2_img)
         img = img.resize((599, 557), Image.ANTIALIAS)
